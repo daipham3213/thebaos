@@ -1,0 +1,33 @@
+{
+  "name": "thebaos-launcher",
+  "description": "launcher for The Baos's Players",
+  "main": "main.js",
+  "author": "fptsmartcloud@fpt.com",
+  "homepage": "https://bricks.fn.run.place",
+  "scripts": {
+    "format": "prettier --write .",
+    "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
+    "start": "SET NODE_ENV=development && electron .",
+    "dev": "SET NODE_ENV=development && electron .",
+    "build": "electron-builder",
+    "postinstall": "electron-builder install-app-deps",
+    "build:unpack": "pnpm run build && electron-builder --dir",
+    "build:win": "pnpm run build && electron-builder --win",
+    "build:mac": "pnpm run build && electron-builder --mac",
+    "build:linux": "pnpm run build && electron-builder --linux"
+  },
+  "devDependencies": {
+    "electron": "^11.4.9",
+    "electron-builder": "^22.9.1",
+    "electron-packager": "^17.1.2",
+    "electron-updater": "^5.3.0",
+    "eslint": "^9.16.0",
+    "eslint-plugin-react": "^7.34.3",
+    "prettier": "^3.3.2"
+  },
+  "dependencies": {
+    "fs-extra": "^10.1.0",
+    "resolve-dependencies": "^6.0.7",
+    "axios": "^1.7.9"
+  }
+}

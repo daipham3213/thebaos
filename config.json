@@ -1,0 +1,5 @@
+{
+    "request": "https://bricks.fn.run.place/request",
+    "flash": "https://bricks.fn.run.place/flash1",
+    "config": "https://bricks.fn.run.place/config.xml"
+}
