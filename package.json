@@ -4,6 +4,7 @@
   "main": "main.js",
   "author": "fptsmartcloud@fpt.com",
   "homepage": "https://bricks.fn.run.place",
+  "version": "1.0.0",
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",

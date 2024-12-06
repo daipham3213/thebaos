@@ -2,18 +2,16 @@ const { app, BrowserWindow, session, ipcMain } = require('electron')
 const { readFileSync } = require('fs-extra')
 const path = require('path')
 
-const loginKey = 'QY-16-WAN-0668-2555555-7ROAD-dandantang-trminhpc773377'
-
-// region Initalize plugins
+// region Initialize plugins
 let _CONFIG = {}
 const getConfig = () => {
-  const configDir = path.join(app.getAppPath(), 'config.json')
+  const configDir = path.join(
+    __dirname.includes('.asar') ? process.resourcesPath : app.getAppPath(),
+    'config.json'
+  )
   try {
     const data = readFileSync(configDir, 'utf8')
-    const config = {
-      ...JSON.parse(data),
-      loginKey
-    }
+    const config = JSON.parse(data)
     _CONFIG = config
     return config
   } catch (error) {
@@ -36,10 +34,9 @@ switch (process.platform) {
     break
 }
 const pluginPath = path.join(
-  __dirname.includes('.asar') ? process.resourcesPath : __dirname,
+  __dirname.includes('.asar') ? process.resourcesPath : app.getAppPath(),
   'plugins/' + pluginName
 )
-
 console.log('pluginPath', pluginPath)
 
 app.commandLine.appendSwitch('disable-renderer-backgrounding')
@@ -50,7 +47,6 @@ if (process.platform !== 'darwin') {
 }
 app.commandLine.appendSwitch('ppapi-flash-path', pluginPath)
 app.commandLine.appendSwitch('disable-site-isolation-trials')
-app.commandLine.appendSwitch('no-sandbox')
 app.commandLine.appendSwitch('ignore-certificate-errors', 'true')
 app.commandLine.appendSwitch('allow-insecure-localhost', 'true')
 app.commandLine.appendSwitch('incognito')
@@ -104,14 +100,13 @@ const createPlayWindow = () => {
   window.loadFile('renderer/play.html')
   window.maximize()
   windows['play'] = window
-  window.webContents.openDevTools()
   return window
 }
 
 app.whenReady().then(() => {
   const config = getConfig()
   const filter = {
-    urls: [`${config.request}*`, `${config.flash}*`, `${config.config}*`]
+    urls: [`${config.host}*`]
   }
   session.defaultSession.webRequest.onBeforeSendHeaders(filter, (details, callback) => {
     callback({ requestHeaders: { Origin: '*', ...details.requestHeaders } })
@@ -129,11 +124,11 @@ app.whenReady().then(() => {
 
   createLoginWindow()
 
-  app.on('activate', function () {
+  app.on('activate', function() {
     if (BrowserWindow.getAllWindows().length === 0) createLoginWindow()
   })
 })
 
-app.on('window-all-closed', function () {
+app.on('window-all-closed', function() {
   if (process.platform !== 'darwin') app.quit()
 })
